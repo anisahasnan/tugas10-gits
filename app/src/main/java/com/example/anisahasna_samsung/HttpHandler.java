@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
@@ -68,6 +69,7 @@ public class HttpHandler {
         String response = null;
         try {
             URL url = new URL(reqUrl);
+            checkConnection(url);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             // read the response
@@ -104,5 +106,17 @@ public class HttpHandler {
             }
         }
         return sb.toString();
+    }
+
+    private void checkConnection(URL url){
+        try {
+            URLConnection connection = url.openConnection();
+            connection.connect();
+            System.out.println("Internet is connected");
+        } catch (MalformedURLException e) {
+            System.out.println("Internet is not connected");
+        } catch (IOException e) {
+            System.out.println("Internet is not connected");
+        }
     }
 }
